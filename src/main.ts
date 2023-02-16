@@ -1,7 +1,9 @@
-import { Logger } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
+import * as cors from 'cors';
+
 
 async function bootstrap() {
 
@@ -11,6 +13,13 @@ async function bootstrap() {
 
   app.setGlobalPrefix('doginapi');
   
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      forbidNonWhitelisted: true
+    })
+  );
+
   const config = new DocumentBuilder()
     .setTitle('Dogin API - Documentación')
     .setDescription('endpoints Dogín')
@@ -20,6 +29,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('doginapi', app, document);
   
+  app.use(cors());
   await app.listen(port);
   logger.verbose(`Aplicación iniciada en el puerto ${port}`);
 
