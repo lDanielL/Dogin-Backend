@@ -1,10 +1,10 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsBoolean, IsEmail, IsOptional, IsString, MaxLength, MinLength } from "class-validator";
+import { IsBoolean, IsEmail, IsOptional, IsString, Matches, MaxLength, MinLength } from "class-validator";
 
 export class CreateUsuarioDto {
 
     @ApiProperty({
-        description:'Nombres del usuario',
+        description: 'Nombres del usuario',
         nullable: false,
         minLength: 1
     })
@@ -13,7 +13,7 @@ export class CreateUsuarioDto {
     nombres: string;
 
     @ApiProperty({
-        description:'Apellidos del usuario',
+        description: 'Apellidos del usuario',
         nullable: false,
         minLength: 1
     })
@@ -22,7 +22,7 @@ export class CreateUsuarioDto {
     apellidos: string;
 
     @ApiProperty({
-        description:'Email del usuario',
+        description: 'Email del usuario',
         nullable: false,
         minLength: 1
     })
@@ -30,7 +30,7 @@ export class CreateUsuarioDto {
     email: string;
 
     @ApiProperty({
-        description:'Password del usuario, mínimo 4 caracteres, máximo 10.',
+        description: 'Password del usuario, mínimo 4 caracteres, máximo 10.',
         nullable: false,
         minLength: 1
     })
@@ -38,8 +38,14 @@ export class CreateUsuarioDto {
     @MaxLength(10)
     password: string;
 
+    @IsOptional()
+    @Matches(/^https?:\/\/.*$/, {
+        message: 'La URL de la imagen debe comenzar con "http://" o "https://"',
+    })
+    imagenDePerfil: string;
+
     @ApiProperty({
-        description:'Estado del usuario.',
+        description: 'Estado del usuario.',
         default: true
     })
     @IsOptional()

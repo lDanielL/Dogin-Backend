@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { Max, Min } from "class-validator";
+import { IsUrl, Max, Min } from "class-validator";
 import { BeforeInsert, BeforeUpdate, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({name:'usuarios'})
@@ -41,6 +41,7 @@ export class Usuario {
     })
     @Column('text',{
         nullable:false,
+        unique: true
     })
     email: string;
 
@@ -54,6 +55,16 @@ export class Usuario {
     })
     password: string;
 
+    @ApiProperty({
+        example: 'http://mifoto.cl',
+        description: 'Almacena la url de la imagen de perfil del usuario.',
+    })
+    @Column('text',{
+        nullable: true
+    })
+    @IsUrl()
+    imagenDePerfil: string;
+    
     @Column('bool',{
         default: true
     })
