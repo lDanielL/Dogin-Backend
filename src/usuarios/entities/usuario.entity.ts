@@ -64,7 +64,7 @@ export class Usuario {
     })
     @IsUrl()
     imagenDePerfil: string;
-    
+
     @Column('bool',{
         default: true
     })
