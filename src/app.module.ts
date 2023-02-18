@@ -19,6 +19,8 @@ import { AuthModule } from './auth/auth.module';
       password: process.env.DB_PASSWORD,
       autoLoadEntities: true,
       synchronize: true,
+      retryAttempts: 3, // Aquí se establece el número de intentos
+      retryDelay: 3000, // Tiempo de espera en milisegundos entre intentos
     }),
 
     UsuarioModule,
