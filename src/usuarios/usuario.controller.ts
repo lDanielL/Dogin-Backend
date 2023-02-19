@@ -3,6 +3,7 @@ import { UsuarioService } from './usuario.service';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
 import { PaginacionDto } from 'src/common/dtos/paginacion.dto';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
+import { Auth } from 'src/auth/decorators';
 
 @Controller('usuarios')
 export class UsuarioController {
@@ -14,14 +15,17 @@ export class UsuarioController {
   }
 
   @Get()
-  todosLosUsuarios(@Query() paginacionDto:PaginacionDto) {
+  @Auth()
+  todosLosUsuarios(
+    @Query() paginacionDto:PaginacionDto,
+    ) {
     return this.usuarioService.todosLosUsuarios(paginacionDto);
   }
 
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUsuarioDto) {
-    return this.usuarioService.update(+id, updateUserDto);
+  update(@Param('id') id: string, @Body() updateUsuarioDto: UpdateUsuarioDto) {
+    return this.usuarioService.update(+id, updateUsuarioDto);
   }
 
   @Delete(':id')

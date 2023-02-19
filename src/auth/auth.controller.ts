@@ -1,48 +1,30 @@
-import { Controller, Get, Post, Body, UseGuards, Req, SetMetadata } from '@nestjs/common';
+import { Controller, Get, Post, Body } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Usuario } from 'src/usuarios/entities';
 import { AuthService } from './auth.service';
+import { Auth } from './decorators';
+import { GetUsuario } from './decorators/get-usuario.decorator';
 import { LoginUsuarioDto } from './dto/login.dto';
 
 
 @ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly authService: AuthService) { }
 
-  
+
   @Post('login')
-  loginUser(@Body() loginUserDto: LoginUsuarioDto) {
-    return this.authService.login(loginUserDto);
+  loginUsuario(@Body() loginUsuarioDto: LoginUsuarioDto) {
+    return this.authService.login(loginUsuarioDto);
   }
 
-  @Get('status-token')
-  // @Auth()
-  checkAuthStatus
-  (
-    /* @GetUser() */ user: Usuario
-  ){
-    return this.authService.checkAuthStatus(user);
+  @Get('statusToken')
+  @Auth()
+  checkAuthStatus(
+    @GetUsuario() usuario: Usuario
+  ) {
+    return this.authService.checkAuthStatus(usuario);
   }
-
-  // @Get('private1')
-  // @RoleProtected(ValidRoles.superUser)
-  // @UseGuards(AuthGuard(), UserRoleGuard )
-  // private1(
-  //   @GetUser() user:User
-  // ){
-
-  //   return user;
-  // }
-
-  // @Get('private')
-  // @Auth(ValidRoles.admin)
-  // private(
-  //   @GetUser() user:User
-  // ){
-
-  //   return user;
-  // }
 
 }
 

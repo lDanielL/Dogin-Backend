@@ -9,7 +9,6 @@ import { AuthModule } from './auth/auth.module';
 @Module({
   imports: [
     ConfigModule.forRoot(),
-
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.DB_HOST,
@@ -22,12 +21,8 @@ import { AuthModule } from './auth/auth.module';
       retryAttempts: 3, // Aquí se establece el número de intentos
       retryDelay: 3000, // Tiempo de espera en milisegundos entre intentos
     }),
-
     UsuarioModule,
     AuthModule
-
-
-
   ],
   controllers: [AppController],
   providers: [AppService],

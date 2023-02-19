@@ -2,7 +2,7 @@ import { ApiProperty } from "@nestjs/swagger";
 import { IsUrl, Max, Min } from "class-validator";
 import { BeforeInsert, BeforeUpdate, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity({name:'usuarios'})
+@Entity({ name: 'usuarios' })
 export class Usuario {
 
     @ApiProperty({
@@ -12,15 +12,15 @@ export class Usuario {
         name: 'ID'
     })
     @PrimaryGeneratedColumn('increment')
-    id:number;
+    id: number;
 
     @ApiProperty({
         example: 'Homero Jay',
         description: 'Almacena los nombres del usuario.',
         uniqueItems: true
     })
-    @Column('text',{
-        nullable:false,
+    @Column('text', {
+        nullable: false,
     })
     nombres: string;
 
@@ -29,8 +29,8 @@ export class Usuario {
         description: 'Almacena los nombres del usuario.',
         uniqueItems: true
     })
-    @Column('text',{
-        nullable:false,
+    @Column('text', {
+        nullable: false,
     })
     apellidos: string;
 
@@ -39,8 +39,8 @@ export class Usuario {
         description: 'Almacena el email del usuario.',
         uniqueItems: true
     })
-    @Column('text',{
-        nullable:false,
+    @Column('text', {
+        nullable: false,
         unique: true
     })
     email: string;
@@ -49,8 +49,8 @@ export class Usuario {
         example: '123456',
         description: 'Almacena la contraseña del usuario.',
     })
-    @Column('text',{
-        nullable:false,
+    @Column('text', {
+        nullable: false,
         select: false
     })
     password: string;
@@ -59,23 +59,32 @@ export class Usuario {
         example: 'http://mifoto.cl',
         description: 'Almacena la url de la imagen de perfil del usuario.',
     })
-    @Column('text',{
+    @Column('text', {
         nullable: true
     })
     @IsUrl()
     imagenDePerfil: string;
 
-    @Column('bool',{
+    @Column('bool', {
         default: true
     })
     estado: boolean;
 
+    @Column('text',{
+        array:true,
+        default:['usuario']
+    })
+    roles: string[];
+
+
     @BeforeInsert()
     @BeforeUpdate()
     convertirAMinusculas() {
-        this.nombres = this.nombres.toLowerCase().trim();
-        this.apellidos = this.apellidos.toLowerCase().trim();
-        this.email = this.email.toLowerCase().trim();
+        Object.keys(this).forEach(key => {
+            if (typeof this[key] === 'string') {
+                this[key] = this[key].toLowerCase().trim();
+            }
+        });
     }
 
 

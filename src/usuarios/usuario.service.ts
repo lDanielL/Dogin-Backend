@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
+import { BadRequestException, forwardRef, Inject, Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
 import { UpdateUsuarioDto } from './dto';
 import { PaginacionDto } from '../common/dtos/paginacion.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -13,7 +13,7 @@ export class UsuarioService {
 
   constructor(
     @InjectRepository(Usuario)
-    private readonly usuarioRepository: Repository<Usuario>
+    private readonly usuarioRepository: Repository<Usuario>,
 
   ) { }
 
@@ -54,16 +54,23 @@ export class UsuarioService {
 
   async buscarUsuario(buscar: {}): Promise<Usuario> {
 
-    const usuario = await this.usuarioRepository.findOne(buscar)
-    return usuario;
+    try {
+      const usuario = await this.usuarioRepository.findOne(buscar)
+
+      return usuario;
+
+    } catch (error) {
+      Logger.error(`usuario.service => buscarUsuario: Error al obtener usuario, error:${error} `)
+    }
   }
 
-  update(id: number, updateUserDto: UpdateUsuarioDto) {
-    return `This action updates a #${id} user`;
+
+  update(id: number, updateUsuarioDto: UpdateUsuarioDto) {
+    return `This action updates a #${id} `;
   }
 
   remove(id: number) {
-    return `This action removes a #${id} user`;
+    return `This action removes a #${id} `;
   }
 
 
