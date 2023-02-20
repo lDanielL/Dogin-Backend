@@ -29,7 +29,8 @@ export class UsuarioRolGuard implements CanActivate {
 
     if (!usuario) {
       Logger.error('UsuarioRolGuard => CanActive: Usuario no encontrado.')
-      throw new BadRequestException('Usuario no encontrado');
+      // throw new BadRequestException('Usuario no encontrado');
+      return false;
     }
 
     for (const role of usuario.roles) {
@@ -37,8 +38,8 @@ export class UsuarioRolGuard implements CanActivate {
     }
 
     Logger.error(`UsuarioRolGuard => CanActive: ${usuario.nombres} ${usuario.apellidos} no tiene un rol válido [${validRoles}]`);
-    throw new ForbiddenException(`${usuario.nombres} ${usuario.apellidos} no tiene un rol válido [${validRoles}]`);
-
+    // throw new ForbiddenException(`${usuario.nombres} ${usuario.apellidos} no tiene un rol válido [${validRoles}]`);
+    return false;
   }
 
 }

@@ -27,19 +27,19 @@ export class AuthService {
 
     if (!usuario) {
       Logger.error(" auth.services => login - Correo no existe.")
-      return false;
+      return {ok:false};
     }
 
     
     if (!bcrypt.compareSync(password, usuario.password)) {
       Logger.error(" auth.services => login - Password inválida.")
-      return false;
+      return {ok:false};
     }
 
-
+    Logger.warn(`Usuario ${usuario.email} logeado.`);
     return {
-      // ! lo saque ya que esta mandando el password
-      // usuario,
+      ok:true,
+      id: usuario.id,
       token: this.getJwtToken({ id: usuario.id })
     };
   }
@@ -58,6 +58,7 @@ export class AuthService {
 
     return {
       ...usuario,
+      ok: true,
       token: this.getJwtToken({ id: usuario.id })
     };
 
