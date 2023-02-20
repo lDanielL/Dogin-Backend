@@ -83,7 +83,7 @@ export class UsuarioService {
     }
 
     Logger.error(error);
-    throw new InternalServerErrorException("Favor contactarse con el administrador");
+    throw new InternalServerErrorException("Favor contactarse con el administrador.");
 
   }
 }
