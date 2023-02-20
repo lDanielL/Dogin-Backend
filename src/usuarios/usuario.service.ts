@@ -18,27 +18,26 @@ export class UsuarioService {
   ) { }
 
 
-  async crearUsuario(createUsuarioDto: CreateUsuarioDto) {
 
+
+  async crearUsuario(createUsuarioDto: CreateUsuarioDto) {
     try {
       const { password, ...usuarioDatos } = createUsuarioDto;
       const usuario = this.usuarioRepository.create({
         ...usuarioDatos,
-        password: bcrypt.hashSync(password, 10)
+        password: bcrypt.hashSync(password,10),
       });
 
       await this.usuarioRepository.save(usuario);
       delete usuario.password;
 
+      Logger.verbose(`Usuario Creado: ${usuario.email}.`)
       return {
         ...usuario,
       }
-
     } catch (error) {
-      this.manejoErroresDB(error)
+      this.manejoErroresDB(error);
     }
-
-
   }
 
   async todosLosUsuarios({ limit = 10, offset = 0 }: PaginacionDto) {

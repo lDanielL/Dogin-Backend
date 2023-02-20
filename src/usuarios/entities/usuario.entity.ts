@@ -81,7 +81,7 @@ export class Usuario {
     @BeforeUpdate()
     convertirAMinusculas() {
         Object.keys(this).forEach(key => {
-            if (typeof this[key] === 'string') {
+            if (typeof this[key] === 'string' && key !== 'password') {
                 this[key] = this[key].toLowerCase().trim();
             }
         });

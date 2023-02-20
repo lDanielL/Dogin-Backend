@@ -6,19 +6,19 @@ import { UsuarioService } from '../usuarios/usuario.service';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
-export class AuthService  {
+export class AuthService {
 
   constructor(
     private readonly jwtService: JwtService,
     private readonly usuarioService: UsuarioService
-    ) {
-    }
+  ) {
+  }
 
 
   async login(loginUsuarioDto: LoginUsuarioDto):Promise<boolean | {}> {
 
     const { password, email } = loginUsuarioDto;
-    
+
     const usuario = await this.usuarioService.buscarUsuario({
       where: { email },
       select: { email: true, password: true, id: true }
@@ -30,6 +30,7 @@ export class AuthService  {
       return false;
     }
 
+    
     if (!bcrypt.compareSync(password, usuario.password)) {
       Logger.error(" auth.services => login - Password inválida.")
       return false;
