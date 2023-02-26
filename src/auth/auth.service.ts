@@ -21,7 +21,7 @@ export class AuthService {
 
     const usuario = await this.usuarioService.buscarUsuario({
       where: { email },
-      select: { email: true, password: true, id: true }
+      select: { email: true, password: true, id: true, imagenDePerfil:true }
     });
 
 
@@ -30,7 +30,7 @@ export class AuthService {
       return {ok:false};
     }
 
-    
+
     if (!bcrypt.compareSync(password, usuario.password)) {
       Logger.error(" auth.services => login - Password inválida.")
       return {ok:false};
@@ -39,8 +39,8 @@ export class AuthService {
     Logger.warn(`Usuario ${usuario.email} logeado.`);
     return {
       ok:true,
-      id: usuario.id,
-      token: this.getJwtToken({ id: usuario.id })
+      imagenDePerfil: usuario.imagenDePerfil,
+      token: this.getJwtToken({ id: usuario.id  })
     };
   }
 

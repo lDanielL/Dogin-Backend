@@ -6,6 +6,9 @@ import { Usuario } from './entities';
 import { Repository } from 'typeorm';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import * as bcrypt from 'bcrypt';
+import { AuthService } from '../auth/auth.service';
+import { JwtService } from '@nestjs/jwt';
+import { JwtPayload } from 'src/auth/interfaces';
 
 
 @Injectable()
@@ -14,6 +17,9 @@ export class UsuarioService {
   constructor(
     @InjectRepository(Usuario)
     private readonly usuarioRepository: Repository<Usuario>,
+    // @Inject(forwardRef(() => AuthService))
+    // private readonly authService: AuthService,
+    private jwtService:JwtService
 
   ) { }
 
@@ -25,19 +31,34 @@ export class UsuarioService {
       const { password, ...usuarioDatos } = createUsuarioDto;
       const usuario = this.usuarioRepository.create({
         ...usuarioDatos,
-        password: bcrypt.hashSync(password,10),
+        password: bcrypt.hashSync(password, 10),
       });
 
       await this.usuarioRepository.save(usuario);
       delete usuario.password;
 
       Logger.verbose(`Usuario Creado: ${usuario.email}.`)
+
+       const token = this.getJwtToken({ id: usuario.id })
+
       return {
         ...usuario,
+        ok: true,
+        token
       }
     } catch (error) {
+
       this.manejoErroresDB(error);
     }
+  }
+
+
+  getJwtToken(payload: JwtPayload) {
+
+    const token = this.jwtService.sign(payload);
+
+    return token;
+
   }
 
   async todosLosUsuarios({ limit = 10, offset = 0 }: PaginacionDto) {
