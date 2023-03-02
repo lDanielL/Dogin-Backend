@@ -1,4 +1,4 @@
-import { BadRequestException, forwardRef, Inject, Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
+import { BadRequestException, forwardRef, Inject, Injectable, InternalServerErrorException, Logger, NotFoundException } from '@nestjs/common';
 import { UpdateUsuarioDto } from './dto';
 import { PaginacionDto } from '../common/dtos/paginacion.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -17,9 +17,7 @@ export class UsuarioService {
   constructor(
     @InjectRepository(Usuario)
     private readonly usuarioRepository: Repository<Usuario>,
-    // @Inject(forwardRef(() => AuthService))
-    // private readonly authService: AuthService,
-    private jwtService:JwtService
+    private jwtService: JwtService
 
   ) { }
 
@@ -39,7 +37,7 @@ export class UsuarioService {
 
       Logger.verbose(`Usuario Creado: ${usuario.email}.`)
 
-       const token = this.getJwtToken({ id: usuario.id })
+      const token = this.getJwtToken({ id: usuario.id })
 
       return {
         ...usuario,
@@ -84,6 +82,16 @@ export class UsuarioService {
     }
   }
 
+  async buscarPorEmail(email: string): Promise<Usuario> {
+
+    const usuario = await this.usuarioRepository.findOne({ where: { email } });
+
+    if (usuario) {
+      Logger.warn(`Ya se encuentra registrado un usuario con el email: ${email}`);
+    }
+
+    return usuario;
+  }
 
   update(id: number, updateUsuarioDto: UpdateUsuarioDto) {
     return `This action updates a #${id} `;
@@ -103,7 +111,7 @@ export class UsuarioService {
       throw new BadRequestException(error.detail);
     }
 
-    Logger.error(error);
+    Logger.error(error.detail);
     throw new InternalServerErrorException("Favor contactarse con el administrador.");
 
   }

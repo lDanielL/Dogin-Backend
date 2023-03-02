@@ -22,6 +22,10 @@ export class UsuarioController {
     return this.usuarioService.todosLosUsuarios(paginacionDto);
   }
 
+  @Get('buscarPorEmail/:email')
+  buscarPorEmail(@Param('email') email: string) {
+    return this.usuarioService.buscarPorEmail(email);
+  }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUsuarioDto: UpdateUsuarioDto) {
