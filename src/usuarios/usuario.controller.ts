@@ -1,13 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Query } from '@nestjs/common';
 import { UsuarioService } from './usuario.service';
-import { UpdateUsuarioDto } from './dto/update-usuario.dto';
 import { PaginacionDto } from 'src/common/dtos/paginacion.dto';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { Auth } from 'src/auth/decorators';
 
 @Controller('usuarios')
 export class UsuarioController {
-  constructor(private readonly usuarioService: UsuarioService) {}
+  constructor(private readonly usuarioService: UsuarioService) { }
 
   @Post('registrarse')
   create(@Body() createUsuarioDto: CreateUsuarioDto) {
@@ -17,8 +16,8 @@ export class UsuarioController {
   @Get()
   @Auth()
   todosLosUsuarios(
-    @Query() paginacionDto:PaginacionDto,
-    ) {
+    @Query() paginacionDto: PaginacionDto,
+  ) {
     return this.usuarioService.todosLosUsuarios(paginacionDto);
   }
 
@@ -27,14 +26,5 @@ export class UsuarioController {
     return this.usuarioService.buscarPorEmail(email);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUsuarioDto: UpdateUsuarioDto) {
-    return this.usuarioService.update(+id, updateUsuarioDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.usuarioService.remove(+id);
-  }
 }
 

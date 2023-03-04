@@ -12,8 +12,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
   providers: [UsuarioService],
   imports: [
     TypeOrmModule.forFeature([Usuario]),
-    forwardRef(()=> AuthModule),
-    //TODO: ESTO ESTA DOS VECES EN EL AUTH, PERO NO SE PUED EIMPORTAR ACA DA ERROR
+    forwardRef(() => AuthModule),
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -26,8 +25,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         }
       }
     }),
-    
+
   ],
-  exports:[UsuarioService, TypeOrmModule]
+  exports: [UsuarioService, TypeOrmModule]
 })
 export class UsuarioModule { }

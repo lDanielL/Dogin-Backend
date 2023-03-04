@@ -5,6 +5,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsuarioModule } from './usuarios/usuario.module';
 import { AuthModule } from './auth/auth.module';
+import { CuidadorModule } from './cuidadores/cuidador.module';
 
 @Module({
   imports: [
@@ -22,7 +23,8 @@ import { AuthModule } from './auth/auth.module';
       retryDelay: 3000, // Tiempo de espera en milisegundos entre intentos
     }),
     UsuarioModule,
-    AuthModule
+    AuthModule,
+    CuidadorModule
   ],
   controllers: [AppController],
   providers: [AppService],

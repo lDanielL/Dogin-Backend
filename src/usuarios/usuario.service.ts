@@ -1,12 +1,10 @@
-import { BadRequestException, forwardRef, Inject, Injectable, InternalServerErrorException, Logger, NotFoundException } from '@nestjs/common';
-import { UpdateUsuarioDto } from './dto';
+import { BadRequestException, Injectable, InternalServerErrorException, Logger, NotFoundException } from '@nestjs/common';
 import { PaginacionDto } from '../common/dtos/paginacion.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Usuario } from './entities';
 import { Repository } from 'typeorm';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import * as bcrypt from 'bcrypt';
-import { AuthService } from '../auth/auth.service';
 import { JwtService } from '@nestjs/jwt';
 import { JwtPayload } from 'src/auth/interfaces';
 
@@ -51,7 +49,7 @@ export class UsuarioService {
   }
 
 
-  getJwtToken(payload: JwtPayload) {
+  getJwtToken(payload: JwtPayload): string {
 
     const token = this.jwtService.sign(payload);
 
@@ -59,7 +57,7 @@ export class UsuarioService {
 
   }
 
-  async todosLosUsuarios({ limit = 10, offset = 0 }: PaginacionDto) {
+  async todosLosUsuarios({ limit = 10, offset = 0 }: PaginacionDto): Promise<Usuario[]> {
 
     const usuarios = await this.usuarioRepository.find({
       take: limit,
@@ -92,16 +90,6 @@ export class UsuarioService {
 
     return usuario;
   }
-
-  update(id: number, updateUsuarioDto: UpdateUsuarioDto) {
-    return `This action updates a #${id} `;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} `;
-  }
-
-
 
   private manejoErroresDB(error: any): never {
 
