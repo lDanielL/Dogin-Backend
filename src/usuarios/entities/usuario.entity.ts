@@ -1,6 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsNotEmpty, IsOptional, IsUrl, Max, MaxLength, Min, MinLength, IsBoolean } from 'class-validator';
-import { BeforeInsert, BeforeUpdate, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Cuidador } from "src/cuidadores/entities/cuidador.entity";
+import { BeforeInsert, BeforeUpdate, Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({ name: 'usuarios' })
 export class Usuario {
@@ -45,7 +46,7 @@ export class Usuario {
         name: 'APELLIDOS',
         nullable: false,
     })
-    @IsNotEmpty()
+    @IsNotEmpty({message:'Apellidos no puede ser nulo.'})
     @MaxLength(30, { message: 'No puede ser mayor a 30 caracteres.' })
     @MinLength(2, { message: 'No puede ser menor a 2 caracteres.' })
     @Column('text', {
@@ -63,7 +64,7 @@ export class Usuario {
         nullable: false,
         uniqueItems: true,
     })
-    @IsNotEmpty()
+    @IsNotEmpty({message: 'No puede ser nulo.'})
     @MaxLength(319, { message: 'No puede ser mayor a 319 caracteres.' })
     @MinLength(7, { message: 'No puede ser menor a 7 caracteres.' })
     @Column('text', {
@@ -110,11 +111,11 @@ export class Usuario {
 
     @ApiProperty({
         default: true,
-        description: 'Almacena la url de la imagen de perfil del usuario.',
-        example: 'http://mifoto.cl',
+        description: 'Almacena el estado del usuario.',
+        example: false,
         name: 'ESTADO',
     })
-    @IsBoolean()
+    @IsBoolean({message:'El estado debe ser true o false'})
     @IsOptional()
     @Column('bool', {
         default: true,

@@ -44,6 +44,31 @@ export class CreateUsuarioDto {
     })
     imagenDePerfil: string;
 
+
+    @IsOptional()
+    @ApiProperty({
+        description: 'La fecha de nacimiento del usuario.',
+        nullable: true,
+        example: '01/01/1980',
+    })
+    fechaNacimiento?: string;
+
+    @IsOptional()
+    @ApiProperty({
+        description: 'Los tipos de servicio que ofrece el usuario.',
+        nullable: true,
+        example: ['Paseo', 'Alojamiento'],
+    })
+    tiposServicios?: string[];
+
+    @IsOptional()
+    @ApiProperty({
+        description: 'Información adicional sobre el usuario.',
+        nullable: true,
+        example: 'Qui adipisicing ipsum consequat velit in fugiat.',
+    })
+    sobreMi?: string;
+
     @ApiProperty({
         description: 'Estado del usuario.',
         default: true

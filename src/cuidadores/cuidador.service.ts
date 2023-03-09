@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateCuidadorDto } from './dto/create-cuidador.dto';
@@ -11,9 +11,12 @@ export class CuidadorService {
     private readonly cuidadorRepository: Repository<Cuidador>,
   ) {}
 
-  async crearCuidador(createCuidadorDto: CreateCuidadorDto): Promise<Cuidador> {
+  async convertirEnCuidador(createCuidadorDto: CreateCuidadorDto): Promise<Cuidador> {
     const nuevoCuidador = this.cuidadorRepository.create(createCuidadorDto);
     return await this.cuidadorRepository.save(nuevoCuidador);
   }
 
+  async findAll(): Promise<Cuidador[]> {
+    return this.cuidadorRepository.find();
+  }
 }
