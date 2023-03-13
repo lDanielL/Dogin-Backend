@@ -9,7 +9,9 @@ export class CreateUsuarioDto {
         minLength: 1
     })
     @IsString()
-    @MinLength(1)
+    @MinLength(1,{
+        message:'nombres debe tener como mínimo un carácter.'
+    })
     nombres: string;
 
     @ApiProperty({
@@ -18,7 +20,8 @@ export class CreateUsuarioDto {
         minLength: 1
     })
     @IsString()
-    @MinLength(1)
+    @MinLength(1,{
+        message:'apellido debe tener como mínimo un carácter.'})
     apellidos: string;
 
     @ApiProperty({
@@ -34,8 +37,10 @@ export class CreateUsuarioDto {
         nullable: false,
         minLength: 1
     })
-    @MinLength(4)
-    @MaxLength(10)
+    @MinLength(4,{ 
+        message:'password debe tener como mínimo cuatro caracteres.'})
+    @MaxLength(10,{ 
+        message:'password debe tener como máximo diez caracteres.'})
     password: string;
 
     @IsOptional()
@@ -44,37 +49,14 @@ export class CreateUsuarioDto {
     })
     imagenDePerfil: string;
 
-
-    @IsOptional()
-    @ApiProperty({
-        description: 'La fecha de nacimiento del usuario.',
-        nullable: true,
-        example: '01/01/1980',
-    })
-    fechaNacimiento?: string;
-
-    @IsOptional()
-    @ApiProperty({
-        description: 'Los tipos de servicio que ofrece el usuario.',
-        nullable: true,
-        example: ['Paseo', 'Alojamiento'],
-    })
-    tiposServicios?: string[];
-
-    @IsOptional()
-    @ApiProperty({
-        description: 'Información adicional sobre el usuario.',
-        nullable: true,
-        example: 'Qui adipisicing ipsum consequat velit in fugiat.',
-    })
-    sobreMi?: string;
-
     @ApiProperty({
         description: 'Estado del usuario.',
         default: true
     })
     @IsOptional()
-    @IsBoolean()
+    @IsBoolean({
+        message: 'estado debe ser true o false.'
+    })
     estado: boolean;
 
 

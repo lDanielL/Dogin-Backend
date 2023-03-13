@@ -48,7 +48,8 @@ export class Cuidador {
   tiposServicios: string[];
 
   @Column({nullable:true})
-  @ApiProperty({ description: 'Una breve descripción sobre el cuidador.', example: 'Qui adipisicing ipsum consequat velit in fugiat.' })
+  @ApiProperty({ description: 'Una breve descripción sobre el cuidador.', 
+    example: 'Qui adipisicing ipsum consequat velit in fugiat.' })
   sobreMi: string;
 
   @OneToOne(() => Usuario, { eager: true })
